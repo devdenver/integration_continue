@@ -11,12 +11,12 @@
 
     - name: télécharger l'application dans /home/appli
       get_url:
-        url: https://github.com/devdenver/integration_continue/blob/master/app_1.0.0.tar.gz
+        url: https://github.com/devdenver/integration_continue/blob/master/app_v1.0.0.js.gz
         dest: /home/appli
       mode: 0755
  
     - name: décompresser l'archive de l'application dans /home/appli
       unarchive:
-        src: /home/appli/app_1.0.0.tar.gz
+        src: /home/appli/app_v1.0.0.js.gz
         dest: /home/appli
 
