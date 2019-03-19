@@ -9,15 +9,15 @@
         state: directory
       mode: 0755
 
-#    - name: télécharger l'application dans /home/appli
-#      get_url:
-#        url: https://github.com/devdenver/integration_continue/blob/master/app_v1.0.0.js.gz
-#        dest: /home/appli
-#      mode: 0755
+    - name: télécharger l'application dans /home/appli
+      get_url:
+        url: https://github.com/devdenver/integration_continue/blob/master/app.tar.zip
+        dest: /home/appli
+      mode: 0755
  
     - name: décompresser l'archive de l'application dans /home/appli
       unarchive:
-        src: /home/appli/app.tar.gz
+        src: /home/appli/app.js.zip
         dest: /home/appli/
         remote_src: no
 
