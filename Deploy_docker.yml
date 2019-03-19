@@ -1,0 +1,7 @@
+- name: Verifier que le daemon Docker est bien installé
+  hosts: localhost
+  gather_facts: False
+  become: yes
+  roles:
+  - include_role: role_docker 
+

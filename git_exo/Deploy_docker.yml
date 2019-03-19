@@ -1,0 +1,10 @@
+- name: Verifier que le daemon Docker est bien installé
+  hosts: localhost
+  gather_facts: False
+  Become: yes
+  tasks:
+    - name: Verifier que le daemon Docker est bien installé
+      yum:
+        name: docker
+        state: present
+
