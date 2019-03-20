@@ -9,15 +9,45 @@
         state: directory
       mode: 0755
 
-    - name: télécharger l'application dans /home/appli
-      get_url:
-        url: https://github.com/devdenver/integration_continue/blob/master/app.tar.zip
-        dest: /home/appli
-      mode: 0755
- 
     - name: décompresser l'archive de l'application dans /home/appli
       unarchive:
         src: /home/appli/app.js.zip
         dest: /home/appli/
-        remote_src: no
+        remote_src: yes 
+    
+    - name: Deposer le fichier systemD de configuration de notre application
+      template:
+        src: app.service.j2
+        dest: /etc/systemd/system/app.service
+      register: systemd
 
+    - name: Reload du Daemon systemctl
+      shell: systemctl daemon-reload
+      when: systemd.changed
+
+    - name: Démarrage de l'application
+      service:
+        name: app
+        state: started
+        enabled: yes
+
+    - name: Verifier que  Nginx est present sur le serveur
+      yum:
+        name: nginx
+        state: present
+
+    - name: Verifier que le service nginx est bien Enabled
+      service:
+        name: nginx
+        enabled: yes
+
+    - name: Deposer le fichier de configuration nginX de notre application
+      template:
+        src: app_nginx.conf.j2
+        dest: /etc/nginx/conf.d/app_nginx.conf
+      register: systemd
+
+    - name: Redémarrage du service nginX
+      service:
+        name: nginx
+        state: restarted
