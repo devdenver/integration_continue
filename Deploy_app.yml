@@ -3,6 +3,9 @@
   gather_facts: False
   become: yes
   tasks:
+    - name: stop app    
+      include: Exploitation_stop_app.yml
+
     - name: Créer répertoire /home/appli
       file:
         path: /home/appli
@@ -24,12 +27,9 @@
     - name: Reload du Daemon systemctl
       shell: systemctl daemon-reload
       when: systemd.changed
-
-    - name: Démarrage de l'application
-      service:
-        name: app
-        state: started
-        enabled: yes
+      
+    - name: start app
+      include: Exploitation_start_app.yml
 
     - name: Verifier que  Nginx est present sur le serveur
       yum:
