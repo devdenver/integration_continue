@@ -1,11 +1,12 @@
 [Unit]
+
 Description=Service de l'application
 After=network.target 
 
 [Service]
 Type=simple
 Environment=NODE_PORT=8081
-ExecStart=/usr/bin/node /home/appli/app.js
+ExecStart=/usr/bin/node /home/appli/app_{{ app_version | default( good_app_version ) }}.js
 Restart=on-failure
 
 [Install]

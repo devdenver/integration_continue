@@ -1,6 +1,6 @@
 - name: Verifier que le daemon Docker est bien installé
   hosts: localhost
-  gather_facts: False
+  gather_facts: True
   become: yes
   tasks:
     - name: stop app    
@@ -14,7 +14,7 @@
 
     - name: décompresser l'archive de l'application dans /home/appli
       unarchive:
-        src: /home/appli/app.js.zip
+        src: "/home/appli/app_{{ app_version }}.js.zip"
         dest: /home/appli/
         remote_src: yes 
     
@@ -26,11 +26,17 @@
 
     - name: Reload du Daemon systemctl
       shell: systemctl daemon-reload
-      when: systemd.changed
       
     - name: start app
       include: Exploitation_start_app.yml
 
+    - name: tester que l'application fonctionne correctement
+      uri:
+        url: http://10.94.12.12:8081
+        status_code: 200
+      register: app_status
+      ignore_errors: yes
+    
     - name: Verifier que  Nginx est present sur le serveur
       yum:
         name: nginx
@@ -51,3 +57,11 @@
       service:
         name: nginx
         state: restarted
+
+    - name: tester que l'application fonctionne correctement
+      uri:
+        url: http://10.94.12.12:8081
+        status_code: 200
+      register: app_status
+      ignore_errors: yes
+
