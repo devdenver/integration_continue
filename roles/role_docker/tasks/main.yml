@@ -1,0 +1,18 @@
+- name: Verifier que le daemon Docker est bien installé
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - docker
+    - docker-client.x86_64
+
+- name: Verifier que le daemon Docker-compose est bien installé
+  shell: "{{ item }}"
+  with_items:
+    - curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - chmod +x /usr/local/bin/docker-compose
+
+- name: Verifier que le service Docker est bien démarré
+  service:
+    name: docker
+    state: started

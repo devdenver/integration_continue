@@ -1,0 +1,9 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: vincent
+  description: role qui install Docker
+  company: "Aston"
+  license: "license (BSD, MIT)"
+  min_ansible_version: 2.4
