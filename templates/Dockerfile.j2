@@ -1,0 +1,14 @@
+FROM centos
+LABEL version="{{ app_version }}" \
+      description="Image docker de mon site web" \
+      os="centos"
+
+RUN yum -y install epel-release
+RUN yum -y install nodejs
+RUN mkdir -p /appli
+
+ADD . /appli/
+
+EXPOSE 8081
+WORKDIR /appli
+CMD /usr/bin/node /appli/app_{{ app_version }}.js

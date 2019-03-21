@@ -4,3 +4,44 @@
   become: yes
   roles:
    - name: role_docker
+  
+  tasks:
+    - name: creation du repertoire docker_by_ansible
+      file:
+        name: /home/appli/docker_by_ansible
+        state: directory
+
+    - name: décompresser l'archive de l'application dans /home/appli
+      unarchive:
+        src: "/home/appli/app_{{ app_version }}.js.zip"
+        dest: /home/appli/docker_by_ansible/
+        remote_src: yes
+ 
+    - name: copier le Dockerfile
+      template:
+        src: Dockerfile.j2
+        dest: /home/appli/docker_by_ansible/Dockerfile
+    
+    - name: verifier que le service docker est bien lance
+      service:
+        name: docker.service
+        state: started
+    
+    - name: Build an image locally
+      docker_image:
+        path: /home/appli/docker_by_ansible/
+        name: "{{ tag_image }}"
+    
+    - name: Demarrer le container de notre application
+      docker:
+        name: myapplication
+        image: "{{ tag_image }}"
+        state: started
+        ports:
+        - "8081:8081"
+        pull: missing
+ 
+    - name: tester que l'application fonctionne correctement
+      uri:
+        url: http://127.0.0.1:8081
+        status_code: 200

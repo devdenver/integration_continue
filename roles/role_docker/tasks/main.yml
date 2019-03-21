@@ -1,3 +1,5 @@
+---
+# tasks file for role_docker
 - name: Verifier que le daemon Docker est bien installé
   yum:
     name: "{{ item }}"
@@ -5,6 +7,7 @@
   with_items:
     - docker
     - docker-client.x86_64
+    - python-docker-py
 
 - name: Verifier que le daemon Docker-compose est bien installé
   shell: "{{ item }}"

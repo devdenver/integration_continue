@@ -1,0 +1,2 @@
+docker_images_version: "1.1"
+tag_image: "vincent/app_{{ app_version }}"

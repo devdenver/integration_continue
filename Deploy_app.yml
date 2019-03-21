@@ -15,7 +15,7 @@
     - name: décompresser l'archive de l'application dans /home/appli
       unarchive:
         src: "/home/appli/app_{{ app_version }}.js.zip"
-        dest: /home/appli/
+        dest: /home/appli/docker_by_ansible/
         remote_src: yes 
     
     - name: Deposer le fichier systemD de configuration de notre application
